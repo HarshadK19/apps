@@ -30,6 +30,10 @@ dependencies:
   provider: ^4.0.4
   flutter_spinkit: ^4.1.2
   google_sign_in: ^4.2.0
+  shared_preferences: ^0.5.6+3
+  fluttertoast: ^4.0.0
+  awesome_card: ^1.1.0
+  intl: any
 
 dev_dependencies:
   flutter_test:

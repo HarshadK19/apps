@@ -4,6 +4,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:app/models/user.dart';
 
+import '../config.dart';
+
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -44,6 +46,8 @@ class AuthService {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
       currentuser = user;
+      await BusApp.sharedPreferences
+          .setString('users', currentuser.uid);
       // if successfull return this
       return _userFromFirebaseUser(user);
     }
@@ -60,7 +64,7 @@ class AuthService {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
       currentuser = user;
-      _savedatauser(userdata);
+      _savedatauser(userdata,currentuser);
       // if successfull return this
       return _userFromFirebaseUser(user); 
     }
@@ -71,9 +75,10 @@ class AuthService {
   }
 
   // Sava data from user
-  Future _savedatauser(Map<String, dynamic> userdata) async {
-    await Firestore.instance.collection('users').document(User().uid).setData(userdata);
+  Future _savedatauser(Map<String, dynamic> userdata, FirebaseUser currentuser) async {
+    await Firestore.instance.collection('users').document(currentuser.uid).setData(userdata);
   }
+
 
   // Sign In with Google
   Future<FirebaseUser> googlelogin() async {
@@ -91,6 +96,8 @@ class AuthService {
         assert(authResult.user.displayName != null);
         assert(authResult.user.photoUrl != null);
         currentuser = authResult.user;
+        await BusApp.sharedPreferences
+            .setString('users', currentuser.uid);
         return currentuser;
       }
     }

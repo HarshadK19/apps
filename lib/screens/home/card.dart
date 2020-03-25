@@ -4,7 +4,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:app/screens/businfo/businfo.dart';
 
 class CustomCard extends StatelessWidget {
-  CustomCard({@required this.routenum, this.from, this.to, this.via, this.stop, this.abv_to, this.abv_from, this.timeto, this.timefrom,});
+  CustomCard({
+    @required this.routenum,
+    this.from,
+    this.to,
+    this.via,
+    this.stop,
+    this.abv_to,
+    this.abv_from,
+    this.timeto,
+    this.timefrom,
+  });
 
   //final name;
   final routenum;
@@ -31,64 +41,71 @@ class CustomCard extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BusInfo(routenum: routenum, stop: stop, abv_to: abv_to, abv_from: abv_from, timeto: timeto, timefrom: timefrom,),
-                )
-            );
+                  builder: (context) => BusInfo(
+                    routenum: routenum,
+                    stop: stop,
+                    abv_to: abv_to,
+                    abv_from: abv_from,
+                    timeto: timeto,
+                    timefrom: timefrom,
+                  ),
+                ));
           },
           child: Container(
-            
             padding: const EdgeInsets.all(30.0),
-        child: Column(
-          children: <Widget>[
-            //Text(name),
-            Text("Route Number :" +" " + routenum, style: GoogleFonts.baloo(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              fontSize: 15,
-              ),
-            ),
-            RichText(
-              text: TextSpan(
-                text: 'From : ',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '$from',
-                    style: GoogleFonts.viga(
-                      color: Colors.blue[800],
-                      fontWeight: FontWeight.w500,
-                    ),
+            child: Column(
+              children: <Widget>[
+                //Text(name),
+                Text(
+                  "Route Number :" + " " + routenum,
+                  style: GoogleFonts.baloo(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 15,
                   ),
-                ]
-              ),
-            ),
-            Text("via" + " " + via , style: GoogleFonts.poppins(),
-            ),
-            RichText(
-              text: TextSpan(
-                text: 'To : ',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
                 ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '$to',
-                    style: GoogleFonts.viga(
-                      color: Colors.blue[800],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ]
-              ),
+                RichText(
+                  text: TextSpan(
+                      text: 'From : ',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '$from',
+                          style: GoogleFonts.viga(
+                            color: Colors.blue[800],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ]),
+                ),
+                Text(
+                  "via" + " " + via,
+                  style: GoogleFonts.poppins(),
+                ),
+                RichText(
+                  text: TextSpan(
+                      text: 'To : ',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '$to',
+                          style: GoogleFonts.viga(
+                            color: Colors.blue[800],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ]),
+                ),
+                Text("(or Vice Versa)", style: GoogleFonts.montserrat()),
+              ],
             ),
-            Text("(or Vice Versa)", style: GoogleFonts.montserrat()),
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }

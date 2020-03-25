@@ -1,3 +1,5 @@
+import 'package:app/OrderDetails/bookingDetails.dart';
+import 'package:app/makePayment.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
@@ -19,7 +21,10 @@ class NavigState extends State<Navig> {
   int currentIndex = 0;
   final _pageOptions =[
     Home(),
-    Pay(),
+    MyBookings(),
+    SelectCard(
+      isMain: true,
+    ),
     About(),
     //Messages(),
     Settings(),
@@ -51,7 +56,13 @@ class NavigState extends State<Navig> {
           ),
           BottomNavyBarItem(
             icon: Icon(Icons.card_membership),
-            title: Text('Pay'),
+            title: Text('Bookings'),
+            activeColor: Colors.purpleAccent,
+            textAlign: TextAlign.center,
+          ),
+          BottomNavyBarItem(
+            icon: Icon(Icons.card_membership),
+            title: Text('Cards'),
             activeColor: Colors.purpleAccent,
             textAlign: TextAlign.center,
           ),

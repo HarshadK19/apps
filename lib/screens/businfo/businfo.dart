@@ -1,3 +1,4 @@
+import 'package:app/screens/addPassengers.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app/screens/businfo/timeinfo.dart';
@@ -22,6 +23,12 @@ class BusInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Printing Derail');
+    print(routenum);
+    print(abv_from);
+    print(abv_to);
+    print(timefrom);
+    
     return Scaffold(
         body: DefaultTabController(
           length: 2,
@@ -29,6 +36,17 @@ class BusInfo extends StatelessWidget {
             appBar: AppBar(
               title: Text(routenum),
               backgroundColor: Color(0xFFBDBDBD),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(onPressed: (){
+                    print('Route Number $routenum');
+                    Route route = MaterialPageRoute(builder: (_)=>AddPassengers(routeNumber: routenum,));
+                    Navigator.push(context, route);
+
+                  },child: Text('Book'),),
+                ),
+              ],
               elevation: 3,
               bottom: TabBar(
                 indicatorSize: TabBarIndicatorSize.label, 
