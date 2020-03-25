@@ -5,7 +5,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
 import 'package:app/screens/home/home.dart';
 import 'package:app/screens/settings/settings.dart';
-import 'package:app/screens/pay/pay.dart';
+
 import 'package:app/screens/about/about.dart';
 
 class Navig extends StatefulWidget {

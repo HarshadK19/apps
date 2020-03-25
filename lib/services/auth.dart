@@ -77,6 +77,8 @@ class AuthService {
   // Sava data from user
   Future _savedatauser(Map<String, dynamic> userdata, FirebaseUser currentuser) async {
     await Firestore.instance.collection('users').document(currentuser.uid).setData(userdata);
+    await BusApp.sharedPreferences
+        .setString('users', currentuser.uid);
   }
 
 

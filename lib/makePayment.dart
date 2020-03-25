@@ -177,7 +177,7 @@ class _CredditCardWidgetState extends State<CredditCardWidget> {
                     ),
                     CreditCard(
                       width: widget.isMain? 320:280,
-                      height: 170,
+                      height: 180,
                       cardNumber: widget.model.cardNumber,
                       cardExpiry: widget.model.expiryDate,
                       cardHolderName: widget.model.cardHolderName,
