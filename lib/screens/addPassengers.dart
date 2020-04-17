@@ -21,6 +21,8 @@ class _AddPassengersState extends State<AddPassengers> {
 
   @override
   Widget build(BuildContext context) {
+    print('passengers');
+    print(Provider.of<CalculateRent>(context, listen: false).count);
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -95,6 +97,7 @@ class _AddPassengersState extends State<AddPassengers> {
           ),
           RaisedButton(
             onPressed: () {
+
               if (Provider.of<CalculateRent>(context, listen: false).count ==
                   0) {
                 Fluttertoast.showToast(
@@ -121,6 +124,7 @@ class _AddPassengersState extends State<AddPassengers> {
                               ? 0
                               : int.parse(students.text),
                         ));
+                Provider.of<CalculateRent>(context, listen: false).displayResult(0, 0, 0);
                 Navigator.push(context, route);
               }
             },

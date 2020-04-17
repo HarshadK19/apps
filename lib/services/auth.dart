@@ -1,5 +1,8 @@
+import 'package:app/navigation/navigation.dart';
+import 'package:app/screens/authenticate/authenticate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:app/models/user.dart';
@@ -40,10 +43,12 @@ class AuthService {
   }
 
   // sign in with email and password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future signInWithEmailAndPassword(String email, String password,BuildContext context) async {
     try { //Requesting to firebase
     // ceate user
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password).catchError((e){
+
+      });
       FirebaseUser user = result.user;
       currentuser = user;
       await BusApp.sharedPreferences
@@ -53,7 +58,7 @@ class AuthService {
     }
     catch(e) {
       print(e.toString());
-      return null;
+      throw('Error');
     }
   }
 
@@ -110,10 +115,15 @@ class AuthService {
   }
 
   // sign out
-  Future signOut() async {
+  Future signOut(BuildContext context) async {
     try {
       currentuser = null;
-      return await _auth.signOut();
+      return await _auth.signOut().then((_){
+        print('singinii out');
+                      Route newRoute = MaterialPageRoute(builder: (_)=>Authenticate());
+              Navigator.pushReplacement(context, newRoute);
+
+      });
     }
     catch(e) {
       print(e.toString());

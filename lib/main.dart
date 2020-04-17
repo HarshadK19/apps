@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     print(BusApp.sharedPreferences
         .getString('users'));
+
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MultiProvider(

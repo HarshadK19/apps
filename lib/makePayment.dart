@@ -1,6 +1,7 @@
 import 'package:app/OrderDetails/particularBookingDetails.dart';
 import 'package:app/models/orderDetails.dart';
 import 'package:app/shared/loading.dart';
+import 'package:app/triggers/calculateRent.dart';
 import 'package:awesome_card/credit_card.dart';
 import 'package:awesome_card/style/card_background.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,8 @@ class SelectCard extends StatefulWidget {
       this.adults,
       this.students,
       this.children,
-      this.routeNumber, this.isMain=false})
+      this.routeNumber,
+      this.isMain = false})
       : super(key: key);
 
   @override
@@ -34,6 +36,13 @@ class SelectCard extends StatefulWidget {
 int currentIndex = 0;
 
 class _SelectCardState extends State<SelectCard> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,7 +64,7 @@ class _SelectCardState extends State<SelectCard> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  widget.isMain?'Your Cards':'Select Card',
+                  widget.isMain ? 'Your Cards' : 'Select Card',
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -129,16 +138,22 @@ class CredditCardWidget extends StatefulWidget {
   final int value;
   final String creditCardID;
   final int totalAmount;
-  final int  adults, students, children;
+  final int adults, students, children;
   final String routeNumber;
   final bool isMain;
+
   const CredditCardWidget(
       {Key key,
       this.model,
       this.currentIndex,
       this.value,
       this.creditCardID,
-      this.totalAmount, this.adults, this.students, this.children, this.routeNumber, this.isMain})
+      this.totalAmount,
+      this.adults,
+      this.students,
+      this.children,
+      this.routeNumber,
+      this.isMain})
       : super(key: key);
 
   @override
@@ -159,16 +174,18 @@ class _CredditCardWidgetState extends State<CredditCardWidget> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                widget.isMain?Container():Radio(
-                  groupValue: widget.currentIndex,
-                  value: widget.value,
-                  activeColor: Colors.deepPurple,
-                  onChanged: (val) {
-                    Provider.of<CardChanger>(context, listen: false)
-                        .displayResult(val);
-                    print(val);
-                  },
-                ),
+                widget.isMain
+                    ? Container()
+                    : Radio(
+                        groupValue: widget.currentIndex,
+                        value: widget.value,
+                        activeColor: Colors.deepPurple,
+                        onChanged: (val) {
+                          Provider.of<CardChanger>(context, listen: false)
+                              .displayResult(val);
+                          print(val);
+                        },
+                      ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -176,7 +193,7 @@ class _CredditCardWidgetState extends State<CredditCardWidget> {
                       height: 10,
                     ),
                     CreditCard(
-                      width: widget.isMain? 320:280,
+                      width: widget.isMain ? 320 : 280,
                       height: 180,
                       cardNumber: widget.model.cardNumber,
                       cardExpiry: widget.model.expiryDate,
@@ -196,12 +213,14 @@ class _CredditCardWidgetState extends State<CredditCardWidget> {
                           Fluttertoast.showToast(msg: 'Please wait!!');
                           Firestore.instance
                             ..collection('users')
-                                .document(BusApp.sharedPreferences.getString('users'))
+                                .document(
+                                    BusApp.sharedPreferences.getString('users'))
                                 .collection('cards')
                                 .document(widget.creditCardID)
                                 .delete()
                                 .then((_) {
-                              Fluttertoast.showToast(msg: 'Deleted Successfully');
+                              Fluttertoast.showToast(
+                                  msg: 'Deleted Successfully');
                             }).catchError((_) {
                               Fluttertoast.showToast(msg: 'Error occured');
                             });
@@ -211,35 +230,42 @@ class _CredditCardWidgetState extends State<CredditCardWidget> {
               ],
             ),
             widget.value == Provider.of<CardChanger>(context).count
-                ? widget.isMain?Container():WideButton(
-                    message: 'Proceed',
-                    onPressed: () {
-                      String id = DateTime.now().millisecondsSinceEpoch.toString();
-                      var model = OrderDetailsModel(
-                        amount: widget.totalAmount,
-                        id: id,
-                        creditCardId: widget.creditCardID,
-                        nAdults: widget.adults,
-                        nChildren: widget.children,
-                        nStudents: widget.students,
-                        routeNumberr: widget.routeNumber,
-                        timestamp: id
-                      );
-                      Fluttertoast.showToast(msg: "Please Wait");
-                      Firestore.instance
-                          .collection('users')
-                          .document(BusApp.sharedPreferences.getString('users'))
-                          .collection('bookings').document(id).setData(model.toJson()).then((_){
-                        Route route = MaterialPageRoute(builder: (c)=>ParticularBookingDetails(
-                          model: model,
-                        ));
-                        Navigator.push(context, route);
-                      }).catchError((_){
-                        Fluttertoast.showToast(msg: "Some Error Occuured");
-                      });
-                      print(widget.model.toJson());
-                    },
-                  )
+                ? widget.isMain
+                    ? Container()
+                    : WideButton(
+                        message: 'Proceed',
+                        onPressed: () {
+                          String id =
+                              DateTime.now().millisecondsSinceEpoch.toString();
+                          var model = OrderDetailsModel(
+                              amount: widget.totalAmount,
+                              id: id,
+                              creditCardId: widget.creditCardID,
+                              nAdults: widget.adults,
+                              nChildren: widget.children,
+                              nStudents: widget.students,
+                              routeNumberr: widget.routeNumber,
+                              timestamp: id);
+                          Fluttertoast.showToast(msg: "Please Wait");
+                          Firestore.instance
+                              .collection('users')
+                              .document(
+                                  BusApp.sharedPreferences.getString('users'))
+                              .collection('bookings')
+                              .document(id)
+                              .setData(model.toJson())
+                              .then((_) {
+                            Route route = MaterialPageRoute(
+                                builder: (c) => ParticularBookingDetails(
+                                      model: model,
+                                    ));
+                            Navigator.push(context, route);
+                          }).catchError((_) {
+                            Fluttertoast.showToast(msg: "Some Error Occuured");
+                          });
+                          print(widget.model.toJson());
+                        },
+                      )
                 : Container(),
           ],
         ),

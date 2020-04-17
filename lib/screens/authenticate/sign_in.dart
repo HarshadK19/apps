@@ -1,3 +1,4 @@
+import 'package:app/navigation/navigation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/gestures.dart';
@@ -151,36 +152,42 @@ class _SignInState extends State<SignIn> {
                       if (_formkey.currentState.validate()) {
                         // Spinner to appear
                         setState(() => loading = true);
-                        dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                        dynamic result = await _auth.signInWithEmailAndPassword(email, password,context).then((_){
+                          print('Navigation sigini');
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Navig()));
+                        }).catchError((_){
+                          print(_.toString());
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CupertinoAlertDialog(
+                                  title: Text(
+                                      'Error'
+                                  ),
+                                  content: Text(
+                                      'Could not sign in with credentials!'
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text(
+                                          'OK'
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              }
+                          );
+                          setState(() {
+                            loading = false; // spinner to not appear
+                          });
+                        });
                         // check if null
                         if (result == null) {
                           // Pop Up error box
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CupertinoAlertDialog(
-                                title: Text(
-                                  'Error'
-                                ),
-                                content: Text(
-                                  'Could not sign in with credentials!'
-                                ),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text(
-                                      'OK'
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            }
-                          );
-                          setState(() { 
-                            loading = false; // spinner to not appear
-                          });
+
                         }
                         // Automatically on success goes on home due to STREAM
                       }
