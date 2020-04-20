@@ -255,6 +255,7 @@ class _CredditCardWidgetState extends State<CredditCardWidget> {
                               .document(id)
                               .setData(model.toJson())
                               .then((_) {
+                            Provider.of<CalculateRent>(context, listen: false).displayResult(0, 0, 0);
                             Route route = MaterialPageRoute(
                                 builder: (c) => ParticularBookingDetails(
                                       model: model,

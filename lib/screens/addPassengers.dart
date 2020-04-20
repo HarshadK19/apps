@@ -124,7 +124,7 @@ class _AddPassengersState extends State<AddPassengers> {
                               ? 0
                               : int.parse(students.text),
                         ));
-                Provider.of<CalculateRent>(context, listen: false).displayResult(0, 0, 0);
+
                 Navigator.push(context, route);
               }
             },
